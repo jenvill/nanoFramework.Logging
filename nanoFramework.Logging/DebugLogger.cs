@@ -18,10 +18,10 @@ namespace nanoFramework.Logging.Debug
         /// Creates a new instance of the <see cref="DebugLogger"/>
         /// </summary>
         /// <param name="loggerName">The logger name</param>
-        public DebugLogger(string loggerName)
+        public DebugLogger(string loggerName, LogLevel minLogLevel = LogLevel.Debug)
         {
             LoggerName = loggerName;
-            MinLogLevel = LogLevel.Debug;
+            MinLogLevel = minLogLevel;
         }
 
         /// <summary>

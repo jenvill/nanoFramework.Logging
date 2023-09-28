@@ -23,7 +23,7 @@ namespace nanoFramework.Logging.Serial
         /// </summary>
         /// <param name="serialDevice">The serial port to use</param>
         /// <param name="loggerName">The logger name</param>
-        public SerialLogger(ref SerialPort serialDevice, string loggerName)
+        public SerialLogger(ref SerialPort serialDevice, string loggerName, LogLevel minLogLevel = LogLevel.Debug)
         {
             _serialPort = serialDevice;
             if (!_serialPort.IsOpen)
@@ -32,7 +32,7 @@ namespace nanoFramework.Logging.Serial
             }
 
             LoggerName = loggerName;
-            MinLogLevel = LogLevel.Debug;
+            MinLogLevel = minLogLevel;
         }
 
         /// <summary>
@@ -61,7 +61,17 @@ namespace nanoFramework.Logging.Serial
                 string msgSerial;
                 if (format == null)
                 {
-                    msgSerial = exception == null ? $"{state}\r\n" : $"{state} {exception}\r\n";
+                    var logLevelString = logLevel switch
+                    {
+                        LogLevel.Trace => "trce",
+                        LogLevel.Debug => "dbug",
+                        LogLevel.Information => "info",
+                        LogLevel.Warning => "warn",
+                        LogLevel.Error => "fail",
+                        LogLevel.Critical => "crit",
+                        _ => "none",
+                    };
+                    msgSerial = exception == null ? $"{DateTime.UtcNow} [{logLevelString}] {LoggerName}: {state}\r\n" : $"{state} {exception}\r\n";
                 }
                 else
                 {

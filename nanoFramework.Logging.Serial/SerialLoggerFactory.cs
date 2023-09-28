@@ -20,6 +20,7 @@ namespace nanoFramework.Logging.Serial
         private readonly Parity _parity;
         private readonly StopBits _stopBits;
         private readonly Handshake _handshake;
+        private readonly LogLevel _minLogLevel;
 
         /// <summary>
         /// Create a new instance of <see cref="SerialLoggerFactory"/> from a <see cref="SerialPort"/>.
@@ -36,7 +37,8 @@ namespace nanoFramework.Logging.Serial
             ushort dataBits = 8,
             Parity parity = Parity.None,
             StopBits stopBits = StopBits.One,
-            Handshake handshake = Handshake.None)
+            Handshake handshake = Handshake.None, 
+            LogLevel minLogLevel = LogLevel.Debug)
         {
             _comPort = comPort;
             _baudRate = baudRate;
@@ -44,6 +46,7 @@ namespace nanoFramework.Logging.Serial
             _parity = parity;
             _stopBits = stopBits;
             _handshake = handshake;
+            _minLogLevel = minLogLevel;
         }
 
         /// <inheritdoc/>
@@ -58,7 +61,7 @@ namespace nanoFramework.Logging.Serial
                 _serial.Handshake = _handshake;
                 _serial.DataBits = _dataBits;
             }
-            return new SerialLogger(ref _serial, categoryName);
+            return new SerialLogger(ref _serial, categoryName, _minLogLevel);
         }
 
         /// <inheritdoc />

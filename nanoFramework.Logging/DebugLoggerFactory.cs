@@ -12,11 +12,20 @@ namespace nanoFramework.Logging.Debug
     /// </summary>
     public class DebugLoggerFactory : ILoggerFactory
     {
+        private readonly LogLevel _minLogLevel;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="minLogLevel"></param>
+        public DebugLoggerFactory(LogLevel minLogLevel = LogLevel.Debug) => _minLogLevel = minLogLevel;
+
         /// <inheritdoc/>
-        public ILogger CreateLogger(string categoryName)
-        {
-            return new DebugLogger(categoryName);
-        }
+        public ILogger CreateLogger(string categoryName, LogLevel minLogLevel = LogLevel.Debug) 
+            => new DebugLogger(categoryName, minLogLevel);
+
+        /// <inheritdoc/>
+        public ILogger CreateLogger(string categoryName) => new DebugLogger(categoryName, _minLogLevel);
 
         /// <inheritdoc />
         public void Dispose()
