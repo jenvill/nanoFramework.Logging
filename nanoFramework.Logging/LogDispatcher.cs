@@ -39,10 +39,11 @@ namespace nanoFramework.Logging
         /// Gets a logger with the name of the current class
         /// </summary>
         /// <param name="currentClass">The class whose logger shall be retrieved</param>
+        /// <param name="fullName"></param>
         /// <returns>A <see cref="ILogger"/> instance</returns>
-        public static ILogger GetCurrentClassLogger(this object currentClass)
+        public static ILogger GetCurrentClassLogger(this object currentClass, bool fullName = true)
         {
-            string name = currentClass.GetType().FullName;
+            string name = fullName ? currentClass.GetType().FullName : currentClass.GetType().Name;
 
             // This is true if the method is used from an incomplete (generic) type
             if (name == null)
